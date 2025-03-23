@@ -1,0 +1,75 @@
+name: Bug report
+description: Help us improve {{cookiecutter.name}}
+labels: 'bug'
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### Thank you for reporting a bug!  
+        Fill out the following form to your best ability to help us fix the problem.  
+        **Only use this if you're absolutely sure that you found a bug and can reproduce it.**
+
+  - type: dropdown
+    attributes:
+      label: Which server Sortware (Implementation) are you using?
+      description: If not listed, it is not supported. Switch to a supported version first.
+      multiple: false
+      options:
+        - Folia
+        - PurPur
+        - Paper
+        - Spigot
+    validations:
+      required: true
+
+  - type: dropdown
+    attributes:
+      label: Which server version version you using?
+      description: If not listed, it is not supported. Update to a supported version first.
+      multiple: false
+      options:
+        - 'above {{cookiecutter.minecraft}}'
+        - '{{cookiecutter.minecraft}}'
+        - '1.21.3'
+        - '1.20.6'
+        - '1.19.4'
+        - '1.18.2'
+        - '1.17.1'
+        - '1.16.5'
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: false
+
+  - type: textarea
+    attributes:
+      label: Expected behaviour
+      description: A clear and concise description of what you expected to happen.
+    validations:
+      required: false
+
+  - type: textarea
+    attributes:
+      label: To Reproduce
+      description: Steps to reproduce this behaviour
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. Scroll down to '...'
+        4. See error
+    validations:
+      required: false
+
+  - type: input
+    attributes:
+      label: Error log (if applicable)
+      description: If you are reporting a console error, upload any relevant log excerpts to https://gist.github.com, save and paste the link in this box.
+      placeholder: https://gist.github.com/...
+    validations:
+      required: false

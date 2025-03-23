@@ -1,0 +1,24 @@
+name: Feature request
+description: Suggest an idea for {{cookiecutter.name}}
+labels: 'Enhancement'
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### Thank you for submitting a feature request!  
+        Fill out the form to help us understand your request and improve its chances of being added.
+
+  - type: textarea
+    attributes:
+      label: What feature do you want to see added?
+      description: A clear and concise description of your feature request.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Are there any alternatives?
+      description: List any alternatives you might have tried.
+    validations:
+      required: false

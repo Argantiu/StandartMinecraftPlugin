@@ -11,5 +11,7 @@
     "softdepend": "",
     "pack_tld": "",
     "pack_name": "",
-    "pack_plugin": ""
+    "pack_plugin": "",
+    "repo_owner": "",
+    "repo_name": ""
 }

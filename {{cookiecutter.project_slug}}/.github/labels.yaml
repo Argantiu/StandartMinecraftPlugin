@@ -1,0 +1,40 @@
+- name: Bug
+  description: Something isn't working
+  color: d73a4a
+- name: Feature
+- name: Documentation
+  description: Improvements or additions to documentation
+  color: 0075ca
+- name: Duplicate
+  description: This issue or pull request already exists
+  color: cfd3d7
+- name: Invalid / Won't fix
+  description: This issue is invalid or has invalid template, etc.
+  color: a2a2a2
+- name: Version
+  description: A new version request
+  color: 64AAA6
+- name: Help!
+  description: Extra attention is needed
+  color: ff0000
+- name: Requires Testing
+  description: This is a new bug which needs to be approved
+  color: bfd9e4
+- name: Awaiting Response
+  description: Waiting on the creator for delivering the information requested
+  color: ffbd28
+- name: High Priority
+  description: This issue should be fixed asap.
+  color: F31858
+- name: Low Priority
+  description: This might need to wait.
+  color: 4C9502
+- name: Bugfix 
+  description: This fixes a bug (Pull Request)
+  color: ff5a7a
+- name: Code Enhancement
+  description: New changes in the code (Pull Request)
+  color: 93f2ff
+- name: Renovate
+  description: Automatic update service (Pull Request)
+  color: 162FF2

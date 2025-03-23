@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: '{{cookiecutter.name}} Discord'
+    url: https://discord.com
+    about: Our Discord, you can try to ask questions here
+  - name: '{{cookiecutter.name}} wiki'
+    url: https://github.com/{{cookiecutter.repo_name}}/wiki
+    about: Take a look at the wiki page for instructions how to setup and use {{cookiecutter.name}}

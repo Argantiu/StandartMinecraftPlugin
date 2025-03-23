@@ -1,4 +1,4 @@
-name: Build
+name: Build {{cookiecutter.name}}
 on:
   push:
     branches:
