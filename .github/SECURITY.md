@@ -3,6 +3,7 @@
 Welcome to the security policy of this plugin.  
 Here you can see what we do to keep the plugin safe.  
   
+  
 ## Supported versions
 Only the latest version in the release tab is supported.  
   
