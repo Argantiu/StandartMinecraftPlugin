@@ -1,0 +1,127 @@
+name: Complete template setup
+on:
+  workflow_dispatch:
+    inputs:
+      name: { description: 'Your plugin name', required: true, default: 'MyAwesomePlugin' }
+      version: { description: 'What version should your plugin have?', required: true, default: '0.0.1' }
+      group: { description: 'Plugin group', required: true, default: 'com.myname.myawesome' }
+      authors: { description: 'The project author (use , for multiple authors)', required: true, default: 'myname, Cycodly' }
+      description: { description: 'Plugin description', required: true, default: 'MyAwesomePlugin created with plugin template' }
+      apiversion: { description: 'Minecraft API version', required: true, default: '1.16' }
+      minecraft: { description: 'Minecraft version', required: true, default: '1.21.4' }
+      depend: { description: 'Plugin depends on (use , for multiple)', required: true, default: 'WorldEdit, PlaceholderAPI' }
+      softdepend: { description: 'Plugin softdepends on (use , for multiple)', required: true, default: 'Chunky' }
+
+permissions:
+  contents: write
+  actions: write
+  repository-projects: write
+
+jobs:
+  
+  update_json:
+    name: "Set given variables in cookiecutter.json"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v2
+
+      - name: Parse inputs and update cookiecutter.json
+        run: |
+          # Parse the group into its components
+          IFS='.' read -r pack_tld pack_name pack_plugin <<< "${{ github.event.inputs.group }}"
+          # Update the cookiecutter.json using jq
+          jq --arg name "${{ github.event.inputs.name }}" \
+             --arg version "${{ github.event.inputs.version }}" \
+             --arg group "${{ github.event.inputs.group }}" \
+             --arg authors "${{ github.event.inputs.authors }}" \
+             --arg description "${{ github.event.inputs.description }}" \
+             --arg apiversion "${{ github.event.inputs.apiversion }}" \
+             --arg minecraft "${{ github.event.inputs.minecraft }}" \
+             --arg depend "${{ github.event.inputs.depend }}" \
+             --arg softdepend "${{ github.event.inputs.softdepend }}" \
+             --arg pack_tld "$pack_tld" \
+             --arg pack_name "$pack_name" \
+             --arg pack_plugin "$pack_plugin" \
+             '.name = $name | .project_slug = $name | .version = $version | .group = $group | .authors = $authors | .description = $description |
+              .apiversion = $apiversion | .minecraft = $minecraft | .depend = $depend | .softdepend = $softdepend |
+              .pack_tld = $pack_tld | .pack_name = $pack_name | .pack_plugin = $pack_plugin' \
+             cookiecutter.json > tmp.json && mv tmp.json cookiecutter.json
+      
+      - name: Commit the changes to cookiecutter.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add cookiecutter.json
+          git commit -m "Update cookiecutter.json with user input"
+          git push origin main --force
+  
+  setup_repo:
+    name: "Reinitialize repository"
+    needs: update_json
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      
+      - name: Check if repository is a template
+        shell: bash
+        run: |
+          IS_TEMPLATE=$(curl --silent -X GET \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY" \
+            | jq -r '.is_template')
+          if [[ "$IS_TEMPLATE" == "true" ]]; then
+            echo "Skipping workflow as repository is a template."
+            exit 1
+          fi
+      
+      - name: Checkout repository using GITHUB_TOKEN
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Install Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      
+      - name: Install dependencies
+        run: pip install --upgrade cookiecutter
+
+      
+      - name: Generate project using cookiecutter
+        run: cookiecutter . --no-input --output-dir ./cookiecutter-temp
+
+      
+      - name: Debug Cookiecutter Output
+        run: |
+          echo "Checking contents of cookiecutter-temp:"
+          ls -la ./cookiecutter-temp || echo "cookiecutter-temp does not exist"
+      
+      - name: Clean up repository
+        shell: bash
+        run: |
+            find ./ -maxdepth 1 \
+            ! -name '.git' \
+            ! -name 'cookiecutter-temp' \
+            ! -name '.' \
+            ! -exec rm -rf {} +
+      
+      - name: Move generated files to root
+        shell: bash
+        run: |
+          rsync -r ./cookiecutter-temp/*/ .
+          rm -rf ./cookiecutter-temp/
+      
+      - name: Reinitialize git repository
+        shell: bash
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git checkout --orphan temp-branch
+          git add .
+          git commit -m 'Initial commit'
+          git push https://github.com/${{ github.repository }} temp-branch:main -f  
