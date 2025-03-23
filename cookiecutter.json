@@ -9,9 +9,8 @@
     "minecraft": "",
     "depend": "",
     "softdepend": "",
-    "pack_tld": "",
-    "pack_name": "",
-    "pack_plugin": "",
+    "__package": "{{ cookiecutter.group|lower|replace(' ', '-') + '.' + cookiecutter.name|lower|replace(' ', '-') }}",
+    "__packfile": "{{ 'src/main/java/' + cookiecutter.group|lower|replace(' ', '-')|replace('.', '/') + '/' + cookiecutter.name|lower|replace(' ', '-') }}",
     "repo_owner": "",
     "repo_name": ""
 }

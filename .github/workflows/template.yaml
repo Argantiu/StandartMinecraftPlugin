@@ -42,12 +42,9 @@ jobs:
              --arg softdepend "${{ github.event.inputs.softdepend }}" \
              --arg repo_owner "${{ github.repository_owner }}" \
              --arg repo_name "${{ github.repository }}" \
-             --arg pack_tld "$pack_tld" \
-             --arg pack_name "$pack_name" \
-             --arg pack_plugin "$pack_plugin" \
              '.name = $name | .project_slug = $name | .version = $version | .group = $group | .authors = $authors | .description = $description |
               .apiversion = $apiversion | .minecraft = $minecraft | .depend = $depend | .softdepend = $softdepend |
-              .pack_tld = $pack_tld | .pack_name = $pack_name | .pack_plugin = $pack_plugin | .repo_owner = $repo_owner | .repo_name = $repo_name ' \
+              .repo_owner = $repo_owner | .repo_name = $repo_name ' \
              cookiecutter.json > tmp.json && mv tmp.json cookiecutter.json
       
       - name: Commit the changes to cookiecutter.json
