@@ -1,4 +1,4 @@
-name: Create Issue on Fork
+name: Create issue on fork
 
 on:
   fork:
@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Create an Issue for User Input
+      - name: Create an issue for user input
         uses: peter-evans/create-issue-from-file@v2
         with:
           title: "Setup Cycodly plugin template"

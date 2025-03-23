@@ -4,10 +4,13 @@ on:
     types: [start-setup-workflow]
 
 jobs:
-  if: github.repository_owner != 'Argantiu'
+  #if: github.repository_owner != 'Argantiu'
   setup:
     name: Reinitialize repository
     runs-on: ubuntu-latest
+    permissions:                # Job-level permissions configuration starts here
+      contents: write           # 'write' access to repository contents
+      pull-requests: write      # 'write' access to pull requests
     env:
       REPO_SETUP_TOKEN: ${{ secrets.REPO_SETUP_TOKEN }}
     steps:
@@ -82,10 +85,31 @@ jobs:
           git config --global user.name "github-actions[bot]" && \
           git checkout --orphan temp-branch && \
           git add . && \
-          #git remote set-url origin https://github-actions[bot]:${{ secrets.GITHUB_TOKEN }}@github.com/CrazyCloudCraft/test.git && \
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git && \
           git commit -m 'Initial commit' && \
-          git push origin temp-branch:main -f
+          git push https://github.com/${{ github.repository }} temp-branch:main -f
+          #git push origin temp-branch:main -f
+        #env:
+        #  GITHUB_TOKEN: ${{ secrets.REPO_SETUP_TOKEN || env.REPO_SETUP_TOKEN }}
+
+      #- name: GitHub Push
+      # You may pin to the exact commit or the version.
+      # uses: ad-m/github-push-action@40bf560936a8022e68a3c00e7d2abefaf01305a6
+        #uses: ad-m/github-push-action@v0.6.0
+        #with:
+          # Token for the repo. Can be passed in using $\{{ secrets.GITHUB_TOKEN }}
+          #github_token: $\{{ secrets.GITHUB_TOKEN }}
+          # Repository name to push. Default or empty value represents current github repository (${GITHUB_REPOSITORY})
+          #repository: ${GITHUB_REPOSITORY} # optional, default is 
+          # Destination branch to push changes
+          #branch: main # optional, default is master
+          # Determines if force push is used
+          #force: true # optional
+          # Determines if --tags is used
+          #tags: # optional
+          # Directory to change to before pushing.
+          #directory: # optional, default is .
+          
+        
 
       - name: Remove secret REPO_SETUP_TOKEN
         # After re-initializing the repository, we can remove the `REPO_SETUP_TOKEN` secret.
