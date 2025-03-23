@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Discord
+    url: https://discord.com
+    about: Our Discord, you can try to ask questions here
+  - name: Plugin wiki
+    url: https://github.com/Argantiu/StandartMinecraftPlugin/wiki
+    about: Take a look at the wiki page for instructions how to setup and use the plugin

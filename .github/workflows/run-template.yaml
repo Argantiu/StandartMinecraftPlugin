@@ -1,0 +1,19 @@
+name: Create Issue on Fork
+
+on:
+  fork:
+    types: [created]  # Trigger when a new fork is created.
+
+jobs:
+  create_issue:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create an Issue for User Input
+        uses: peter-evans/create-issue-from-file@v2
+        with:
+          title: "Setup Cycodly plugin template"
+          content-filepath: ./.github/setup.md
+          #labels: "input-needed"
+          assignees: ""
+          issue-number: 1
