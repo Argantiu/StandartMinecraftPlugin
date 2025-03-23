@@ -41,7 +41,7 @@ jobs:
              --arg depend "${{ github.event.inputs.depend }}" \
              --arg softdepend "${{ github.event.inputs.softdepend }}" \
              --arg repo_owner "${{ github.repository_owner }}" \
-             --arg repo_name "${{ github.repository }}"
+             --arg repo_name "${{ github.repository }}" \
              --arg pack_tld "$pack_tld" \
              --arg pack_name "$pack_name" \
              --arg pack_plugin "$pack_plugin" \
